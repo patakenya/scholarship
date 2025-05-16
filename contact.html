@@ -1,0 +1,364 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pata Scholarship | Contact Us</title>
+    <meta name="description" content="Contact Pata Scholarship for inquiries about scholarships in Kenya. Reach us via email, phone, or our contact form.">
+    <meta name="keywords" content="contact Pata Scholarship, scholarships Kenya contact, M-Pesa scholarship application, Kenyan scholarship support">
+    <meta name="robots" content="index, follow">
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#006600',secondary:'#bc0000'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body { font-family: 'Open Sans', sans-serif; color: #333; }
+        h1, h2, h3, h4, h5, h6 { font-family: 'Ubuntu', sans-serif; }
+        .nav-link { position: relative; }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: #006600; transition: width 0.3s; }
+        .nav-link:hover::after { width: 100%; }
+        .active-nav::after { width: 100%; }
+        .custom-checkbox { appearance: none; width: 18px; height: 18px; border: 2px solid #006600; border-radius: 4px; position: relative; cursor: pointer; }
+        .custom-checkbox:checked { background-color: #006600; }
+        .custom-checkbox:checked::after { content: ''; position: absolute; width: 5px; height: 10px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); top: 1px; left: 5px; }
+        .form-section { transition: all 0.3s ease; }
+        .error-message { color: #bc0000; font-size: 0.875rem; display: none; }
+        .success-modal { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        .checkmark { animation: checkmark 0.5s ease-in; }
+        @keyframes checkmark {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <header class="bg-white shadow-sm fixed w-full z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="index.html" class="text-2xl font-['Pacifico'] text-primary flex items-center gap-2">
+                <div class="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-full">
+                    <i class="ri-graduation-cap-line ri-lg"></i>
+                </div>
+                Pata Scholarship
+            </a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="index.html" class="nav-link font-medium">Home</a>
+                <a href="apply.html" class="nav-link font-medium">Apply</a>
+                <a href="about.html" class="nav-link font-medium">About</a>
+                <a href="faqs.html" class="nav-link font-medium">FAQs</a>
+                <a href="contact.html" class="nav-link font-medium active-nav">Contact</a>
+            </nav>
+            <div class="flex items-center space-x-4">
+                <a href="#" class="hidden md:block text-gray-700 hover:text-primary transition">
+                    <div class="w-8 h-8 flex items-center justify-center">
+                        <i class="ri-search-line ri-lg"></i>
+                    </div>
+                </a>
+                <a href="apply.html" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
+                <button class="md:hidden w-8 h-8 flex items-center justify-center">
+                    <i class="ri-menu-line ri-lg"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-16">
+        <section class="bg-primary bg-opacity-10 min-h-[400px] flex items-center">
+            <div class="container mx-auto px-4 py-16">
+                <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Contact Us</h1>
+                <p class="text-lg text-gray-700 mb-8 max-w-3xl">Have questions about our scholarship program? Reach out to us via phone, email, or the form below.</p>
+            </div>
+        </section>
+
+        <section class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <div class="grid md:grid-cols-2 gap-12">
+                    <div>
+                        <h2 class="text-2xl font-bold mb-6">Get in Touch</h2>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <div class="w-8 h-8 flex items-center justify-center text-primary">
+                                    <i class="ri-map-pin-line ri-lg"></i>
+                                </div>
+                                <span class="ml-2 text-gray-700">Kimathi Street, Nairobi, Kenya</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-8 h-8 flex items-center justify-center text-primary">
+                                    <i class="ri-mail-line ri-lg"></i>
+                                </div>
+                                <span class="ml-2 text-gray-700">info@patascholarship.co.ke</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-8 h-8 flex items-center justify-center text-primary">
+                                    <i class="ri-phone-line ri-lg"></i>
+                                </div>
+                                <span class="ml-2 text-gray-700">+254 712 345 678</span>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="w-8 h-8 flex items-center justify-center text-primary">
+                                    <i class="ri-time-line ri-lg"></i>
+                                </div>
+                                <span class="ml-2 text-gray-700">Mon-Fri: 8:00 AM - 6:00 PM</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl font-bold mb-6">Send Us a Message</h2>
+                        <form id="contact-form" class="space-y-6">
+                            <div class="form-section">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Full Name <span class="text-secondary">*</span></label>
+                                <input type="text" name="full_name" placeholder="Enter your full name" class="w-full px-4 py-2 border-none rounded focus:ring-2 focus:ring-primary focus:outline-none" required>
+                                <p class="error-message" id="full_name_error">Full name is required.</p>
+                            </div>
+                            <div class="form-section">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Email Address <span class="text-secondary">*</span></label>
+                                <input type="email" name="email" placeholder="Enter your email" class="w-full px-4 py-2 border-none rounded focus:ring-2 focus:ring-primary focus:outline-none" required>
+                                <p class="error-message" id="email_error">Valid email is required.</p>
+                            </div>
+                            <div class="form-section">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Message <span class="text-secondary">*</span></label>
+                                <textarea name="message" placeholder="Your message" class="w-full px-4 py-2 border-none rounded focus:ring-2 focus:ring-primary focus:outline-none" rows="4" required></textarea>
+                                <p class="error-message" id="message_error">Message is required.</p>
+                            </div>
+                            <div class="form-section">
+                                <div class="flex items-center">
+                                    <input type="checkbox" name="consent" class="custom-checkbox mr-2" required>
+                                    <label class="text-sm text-gray-600">I agree to the <a href="#" class="text-primary hover:underline">Privacy Policy</a>. <span class="text-secondary">*</span></label>
+                                </div>
+                                <p class="error-message" id="consent_error">You must agree to the terms.</p>
+                            </div>
+                            <button type="submit" class="w-full px-6 py-3 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Success Modal -->
+        <div id="success-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="success-modal bg-white rounded-lg p-8 max-w-md w-full text-center shadow-xl">
+                <div class="flex justify-center mb-4">
+                    <i class="ri-checkbox-circle-fill ri-3x text-primary checkmark"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">Message Sent!</h2>
+                <p class="text-gray-700 mb-6">Thank you for reaching out! We’ll respond to your inquiry within 24 hours.</p>
+                <a href="index.html" class="px-6 py-3 bg-primary text-white rounded-button font-medium hover:bg-opacity-90 transition">Back to Home</a>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-900 text-white pt-16 pb-8">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <a href="index.html" class="text-2xl font-['Pacifico'] text-white flex items-center gap-2 mb-6">
+                        <div class="w-10 h-10 flex items-center justify-center bg-white text-primary rounded-full">
+                            <i class="ri-graduation-cap-line ri-lg"></i>
+                        </div>
+                        Pata Scholarship
+                    </a>
+                    <p class="text-gray-400 mb-6">Empowering Kenyan students with access to quality education through scholarships.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-primary rounded-full transition">
+                            <i class="ri-facebook-fill"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-primary rounded-full transition">
+                            <i class="ri-twitter-x-fill"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-primary rounded-full transition">
+                            <i class="ri-linkedin-fill"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 flex items-center justify-center bg-gray-800 hover:bg-primary rounded-full transition">
+                            <i class="ri-instagram-fill"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-6">Quick Links</h3>
+                    <ul class="space-y-3">
+                        <li><a href="index.html" class="text-gray-400 hover:text-white transition">Home</a></li>
+                        <li><a href="apply.html" class="text-gray-400 hover:text-white transition">Apply</a></li>
+                        <li><a href="about.html" class="text-gray-400 hover:text-white transition">About</a></li>
+                        <li><a href="faqs.html" class="text-gray-400 hover:text-white transition">FAQs</a></li>
+                        <li><a href="contact.html" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-6">Resources</h3>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Scholarship Guide</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Application Tips</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Eligibility Checker</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-6">Contact Us</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <div class="w-5 h-5 flex items-center justify-center text-primary mt-1">
+                                <i class="ri-map-pin-line"></i>
+                            </div>
+                            <span class="ml-2 text-gray-400">Kimathi Street, Nairobi, Kenya</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-5 h-5 flex items-center justify-center text-primary mt-1">
+                                <i class="ri-mail-line"></i>
+                            </div>
+                            <span class="ml-2 text-gray-400">info@patascholarship.co.ke</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-5 h-5 flex items-center justify-center text-primary mt-1">
+                                <i class="ri-phone-line"></i>
+                            </div>
+                            <span class="ml-2 text-gray-400">+254 712 345 678</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-5 h-5 flex items-center justify-center text-primary mt-1">
+                                <i class="ri-time-line"></i>
+                            </div>
+                            <span class="ml-2 text-gray-400">Mon-Fri: 8:00 AM - 6:00 PM</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-8 border-t border-gray-800 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 Pata Scholarship. All rights reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 text-sm hover:text-white transition">Privacy Policy</a>
+                    <a href="#" class="text-gray-400 text-sm hover:text-white transition">Terms of Service</a>
+                    <a href="#" class="text-gray-400 text-sm hover:text-white transition">Cookie Policy</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+            return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+            if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+                try {
+                    var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                    var firstSheetName = workbook.SheetNames[0];
+                    var worksheet = workbook.Sheets[firstSheetName];
+                    var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                    var filteredData = jsonData.filter(row => row.some(filledCell));
+                    var headerRowIndex = filteredData.findIndex((row, index) =>
+                        row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                    );
+                    if (headerRowIndex === -1 || headerRowIndex > 25) {
+                        headerRowIndex = 0;
+                    }
+                    var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+                    csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                    return csv;
+                } catch (e) {
+                    console.error(e);
+                    return "";
+                }
+            }
+            return gk_fileData[filename] || "";
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.querySelector('.md\\:hidden');
+            const mobileMenu = document.querySelector('.md\\:flex.items-center.space-x-8');
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    if (mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.remove('hidden');
+                        mobileMenu.classList.add('flex', 'flex-col', 'absolute', 'top-16', 'left-0', 'right-0', 'bg-white', 'shadow-md', 'p-4', 'space-y-4', 'space-x-0', 'z-50');
+                    } else {
+                        mobileMenu.classList.add('hidden');
+                        mobileMenu.classList.remove('flex', 'flex-col', 'absolute', 'top-16', 'left-0', 'right-0', 'bg-white', 'shadow-md', 'p-4', 'space-y-4', 'space-x-0', 'z-50');
+                    }
+                });
+            }
+
+            // Contact Form Validation
+            const form = document.getElementById('contact-form');
+            const successModal = document.getElementById('success-modal');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                let isValid = true;
+
+                const requiredFields = [
+                    { id: 'full_name', errorId: 'full_name_error', validate: val => val.trim() !== '' },
+                    { id: 'email', errorId: 'email_error', validate: val => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
+                    { id: 'message', errorId: 'message_error', validate: val => val.trim() !== '' },
+                    { id: 'consent', errorId: 'consent_error', validate: () => form.querySelector('input[name="consent"]').checked }
+                ];
+
+                requiredFields.forEach(field => {
+                    const input = form.querySelector(`[name="${field.id}"]`);
+                    const error = document.getElementById(field.errorId);
+                    if (!field.validate(input.value)) {
+                        error.style.display = 'block';
+                        isValid = false;
+                    } else {
+                        error.style.display = 'none';
+                    }
+                });
+
+                if (isValid) {
+                    successModal.classList.remove('hidden');
+                    setTimeout(() => {
+                        successModal.classList.add('hidden');
+                        window.location.href = 'index.html';
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
