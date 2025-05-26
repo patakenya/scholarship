@@ -1,50 +1,11 @@
-<script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
-        </script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pata Scholarship | Apply for Scholarships in Kenya</title>
-    <meta name="description" content="Apply for scholarships in Kenya with Pata Scholarship. Join thousands of successful students who’ve transformed their futures with Pata Scholarship—apply today and be part of our success story!">
-    <meta name="keywords" content="apply for scholarships Kenya, scholarships Kenya, M-Pesa scholarship application, Pata Scholarship">
+    <title>Pata Scholarship | Apply for Top Scholarships in Kenya 2025</title>
+    <meta name="description" content="Apply for top scholarships in Kenya 2025, including Equity Wings to Fly, KCB Scholarship, Safaricom Foundation, and more with Pata Scholarship. Join thousands of successful students today!">
+    <meta name="keywords" content="apply for scholarships Kenya, scholarships Kenya 2025, Equity Wings to Fly 2025, KCB Scholarship 2025, Safaricom Foundation Scholarship, M-Pesa scholarship application, Pata Scholarship">
     <meta name="robots" content="index, follow">
     <script src="https://cdn.tailwindcss.com/3.4.16"></script>
     <script>tailwind.config={theme:{extend:{colors:{primary:'#006600',secondary:'#bc0000'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
@@ -74,6 +35,9 @@
             50% { transform: scale(1.2); }
             100% { transform: scale(1); }
         }
+        .scholarship-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .scholarship-card:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); }
+        .scholar-image { object-fit: cover; border-radius: 8px; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -122,39 +86,82 @@
 
         <section class="py-16 bg-gray-50">
             <div class="container mx-auto px-4">
-                <h2 class="text-2xl font-bold text-center mb-4">Featured Scholarships</h2>
-                <p class="text-lg text-gray-700 text-center mb-12 max-w-3xl mx-auto">Explore top scholarships in Kenya to fund your education. Apply now to secure your future—limited slots available!</p>
+                <h2 class="text-2xl font-bold text-center mb-4">Top Scholarships in Kenya 2025</h2>
+                <p class="text-lg text-gray-700 text-center mb-12 max-w-3xl mx-auto">Discover top scholarships in Kenya to fund your education. Apply now for 2025 opportunities—limited slots available!</p>
                 <div class="grid md:grid-cols-3 gap-8">
                     <div class="scholarship-card bg-white rounded-lg shadow-md p-6 text-center">
-                        <i class="ri-award-fill ri-2x text-primary mb-4"></i>
+                        <img src="https://www.mtotonews.com/wp-content/uploads/2022/04/how-to-apply-for-2018-equity-bank-wings-to-fly-scholarship-online-application-forms-pdf.jpg" alt="Equity Wings to Fly scholarship student in Kenya" class="scholarship-image w-full h-24 mb-4">
                         <h3 class="text-xl font-bold mb-2">Equity Wings to Fly</h3>
-                        <p class="text-gray-600 mb-4">Up to KSh 500,000 for secondary and university education. Open to bright students from disadvantaged backgrounds.</p>
+                        <p class="text-gray-600 mb-4">Up to KSh 500,000 for secondary and university education. For top KCPE performers (350+ marks) from disadvantaged backgrounds.</p>
                         <p class="text-sm text-gray-500 mb-4">Deadline: June 30, 2025</p>
-                        <a href="apply.html" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
+                        <a href="apply.html#scholarshipapply" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
                     </div>
                     <div class="scholarship-card bg-white rounded-lg shadow-md p-6 text-center">
-                        <i class="ri-money-dollar-circle-fill ri-2x text-primary mb-4"></i>
+                        <img src="https://cdn.standardmedia.co.ke/images/friday/rkpipwhexypkn9656859bd9aa504.jpg" alt="KCB Scholarship student in Kenya" class="scholarship-image w-full h-24 mb-4">
                         <h3 class="text-xl font-bold mb-2">KCB Scholarship</h3>
-                        <p class="text-gray-600 mb-4">KSh 200,000 per year for high school students with strong academic performance.</p>
+                        <p class="text-gray-600 mb-4">KSh 200,000 per year for high school students with strong KCPE performance.</p>
                         <p class="text-sm text-gray-500 mb-4">Deadline: July 15, 2025</p>
-                        <a href="apply.html" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
+                        <a href="apply.html#scholarshipapply" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
                     </div>
                     <div class="scholarship-card bg-white rounded-lg shadow-md p-6 text-center">
-                        <i class="ri-graduation-cap-fill ri-2x text-primary mb-4"></i>
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEi3b6MfqgZ4eyGrNP9IQmkuk-RgC3YBWo6ed6QAKcp5E5Zk3JoJ0x5JeDxETxv_6xT1SIvY8bW5NRusJbWL7RsbOPdU6nEw-mM2MV7dhg44Gwfw39d4uRgPvpHbkYujfdF2uUl5bVoRLqAU/s1600/Safaricom+Foundation.jpg" alt="Safaricom Foundation STEM scholarship in Kenya" class="scholarship-image w-full h-24 mb-4">
                         <h3 class="text-xl font-bold mb-2">Safaricom Foundation</h3>
-                        <p class="text-gray-600 mb-4">Full funding for STEM courses at top Kenyan universities. For students with a passion for innovation.</p>
+                        <p class="text-gray-600 mb-4">Full funding for STEM courses at top Kenyan universities. For innovative students.</p>
                         <p class="text-sm text-gray-500 mb-4">Deadline: August 1, 2025</p>
-                        <a href="apply.html" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
+                        <a href="apply.html#scholarshipapply" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
                     </div>
+                    <div class="scholarship-card bg-white rounded-lg shadow-md p-6 text-center">
+                        <img src="https://www.jkf.co.ke/images/headers/jkflogo1.jpg" alt="Jomo Kenyatta Foundation scholarship recipient" class="scholarship-image w-full h-24 mb-4">
+                        <h3 class="text-xl font-bold mb-2">Jomo Kenyatta Foundation</h3>
+                        <p class="text-gray-600 mb-4">Supports bright, orphaned, or needy secondary students across Kenya.</p>
+                        <p class="text-sm text-gray-500 mb-4">Deadline: July 10, 2025</p>
+                        <a href="apply.html#scholarshipapply" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
+                    </div>
+                    <div class="scholarship-card bg-white rounded-lg shadow-md p-6 text-center">
+                        <img src="https://impactphilanthropyafrica.org/wp-content/uploads/2021/07/M-pesa-Foundation.png" alt="M-Pesa Foundation Academy student" class="scholarship-image w-full h-24 mb-4">
+                        <h3 class="text-xl font-bold mb-2">M-Pesa Foundation</h3>
+                        <p class="text-gray-600 mb-4">Full secondary education at M-Pesa Foundation Academy for needy students.</p>
+                        <p class="text-sm text-gray-500 mb-4">Deadline: June 15, 2025</p>
+                        <a href="apply.html#scholarshipapply" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
+                    </div>
+                    <div class="scholarship-card bg-white rounded-lg shadow-md p-6 text-center">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTgSgWcFnH7xX_F0Mg2htnSC0Faz1XAKSFzeg&s" alt="KTDA National Tea Scholarship in Kenya" class="scholarship-image w-full h-24 mb-4">
+                        <h3 class="text-xl font-bold mb-2">KTDA National Tea</h3>
+                        <p class="text-gray-600 mb-4">For students from KTDA tea factory areas with 350+ KCPE marks.</p>
+                        <p class="text-sm text-gray-500 mb-4">Deadline: June 20, 2025</p>
+                        <a href="apply.html#scholarshipapply" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
+                    </div>
+                    <div class="scholarship-card bg-white rounded-lg shadow-md p-6 text-center">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgqraVsfqKtQqBEgnHEh-DSRlZ9asosNft4Q&s" alt="Elimu Fund Scholarship student in Kenya" class="scholarship-image w-full h-24 mb-4">
+                        <h3 class="text-xl font-bold mb-2">Elimu Fund</h3>
+                        <p class="text-gray-600 mb-4">Covers 100% high school fees, uniforms, and stipends for needy students.</p>
+                        <p class="text-sm text-gray-500 mb-4">Deadline: July 20, 2025</p>
+                        <a href="apply.html#scholarshipapply" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
+                    </div>
+                    <div class="scholarship-card bg-white rounded-lg shadow-md p-6 text-center">
+                        <img src="https://impactphilanthropyafrica.org/wp-content/uploads/2021/07/Family-Group-Foundation.png" alt="Family Bank Foundation scholarship recipient" class="scholarship-image w-full h-24 mb-4">
+                        <h3 class="text-xl font-bold mb-2">Family Bank Foundation</h3>
+                        <p class="text-gray-600 mb-4">For needy Form 1 students with strong KCPE results.</p>
+                        <p class="text-sm text-gray-500 mb-4">Deadline: June 25, 2025</p>
+                        <a href="apply.html#scholarshipapply" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
+                    </div>
+                    <div class="scholarship-card bg-white rounded-lg shadow-md p-6 text-center">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5KHuzr6Fmosz5Vn4ewOmrE8wQ8bOOTVv6Qg&s" alt="Palmhouse Foundation scholarship student" class="scholarship-image w-full h-24 mb-4">
+                        <h3 class="text-xl font-bold mb-2">Palmhouse Foundation</h3>
+                        <p class="text-gray-600 mb-4">Finances secondary education for bright, needy students in Kenya.</p>
+                        <p class="text-sm text-gray-500 mb-4">Deadline: July 5, 2025</p>
+                        <a href="apply.html#scholarshipapply" class="px-4 py-2 bg-secondary text-white rounded-button font-medium hover:bg-opacity-90 transition">Apply Now</a>
+                    </div>
+                    
                 </div>
                 <div class="text-center mt-8">
                     <p class="text-gray-700 font-medium">Trusted by over 10,000 students across Kenya</p>
-                    <a href="apply.html" class="mt-4 inline-block px-6 py-3 bg-primary text-white rounded-button font-medium hover:bg-opacity-90 transition">View All Scholarships</a>
+                    <a href="apply.html#scholarshipapply" class="mt-4 inline-block px-6 py-3 bg-primary text-white rounded-button font-medium hover:bg-opacity-90 transition">View All Scholarships</a>
                 </div>
             </div>
         </section>
 
-        <section class="py-16 bg-white">
+        <section id="scholarshipapply" class="py-16 bg-white">
             <div class="container mx-auto px-4">
                 <div class="max-w-3xl mx-auto bg-gray-50 rounded-lg shadow-md p-8">
                     <h2 class="text-2xl font-bold mb-6">Scholarship Application Form</h2>
@@ -255,7 +262,7 @@
                             <div class="grid md:grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700 mb-1">Scholarship Name <span class="text-secondary">*</span></label>
-                                    <input type="text" name="scholarship_name" placeholder="e.g., Equity Wings to Fly" class="w-full px-4 py-2 border-none rounded focus:ring-2 focus:ring-primary focus:outline-none" required>
+                                    <input type="text" name="scholarship_name" id="scholarship_name" placeholder="e.g., Equity Wings to Fly" class="w-full px-4 py-2 border-none rounded focus:ring-2 focus:ring-primary focus:outline-none" required>
                                     <p class="error-message" id="scholarship_name_error">Scholarship name is required.</p>
                                 </div>
                                 <div>
@@ -432,6 +439,27 @@
         }
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Pre-fill Scholarship Name from Query Parameter
+            const scholarshipMap = {
+                'equity-wings': 'Equity Wings to Fly',
+                'kcb': 'KCB Scholarship',
+                'safaricom': 'Safaricom Foundation',
+                'jomo-kenyatta': 'Jomo Kenyatta Foundation',
+                'm-pesa': 'M-Pesa Foundation',
+                'ktda': 'KTDA National Tea',
+                'elimu': 'Elimu Fund',
+                'family-bank': 'Family Bank Foundation',
+                'palmhouse': 'Palmhouse Foundation',
+                'co-operative': 'Co-operative Bank Foundation'
+            };
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const scholarshipParam = urlParams.get('scholarship')?.toLowerCase();
+            const scholarshipInput = document.getElementById('scholarship_name');
+            if (scholarshipParam && scholarshipMap[scholarshipParam]) {
+                scholarshipInput.value = scholarshipMap[scholarshipParam];
+            }
+
             // Mobile Menu Toggle
             const mobileMenuButton = document.querySelector('.md\\:hidden');
             const mobileMenu = document.querySelector('.md\\:flex.items-center.space-x-8');
@@ -455,7 +483,7 @@
             addAcademicBtn.addEventListener('click', function() {
                 academicCount++;
                 const entry = document.createElement('div');
-                entry.classList.add('academic-entry', 'grid', 'md:grid-cols-2', 'gap-4', 'border-b', 'pb-4');
+                entry.className = 'academic-entry grid md:grid-cols-2 gap-4 border-b pb-4';
                 entry.innerHTML = `
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Institution Name <span class="text-secondary">*</span></label>
@@ -469,13 +497,13 @@
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Start Year <span class="text-secondary">*</span></label>
-                        <input type="number" name="aca_start_year[]" placeholder="e.g., 2023" min="1900" max="2025" class="w-full px-4 py-2 border-none rounded focus:ring-2 focus:ring-primary focus:outline-none" required>
+                        خواهد id="aca_start_year${academicCount}" style="direction: ltr;" placeholder="e.g., 2023" min="1900" max="2025" class="w-full px-4 py-2 border-none rounded focus:ring-2 focus:ring-primary focus:outline-none" required>
                         <p class="error-message" id="aca_start_year_error_${academicCount}">Start year is required.</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">End Year (or Expected) <span class="text-secondary">*</span></label>
-                        <input type="number" name="aca_end_year[]" placeholder="e.g., 2027" min="1900" max="2030" class="w-full px-4 py-2 border-none rounded focus:ring-2 focus:ring-primary focus:outline-none" required>
-                        <p class="error-message" id="aca_end_year_error_${academicCount}">End year is required.</p>
+                            <input type="number" name="aca_end_year[]" placeholder="e.g., 2027" min="1900" max="2030" class="w-full px-4 py-2 border-none rounded focus:ring-2 focus:ring-primary focus:outline-none" required>
+                            <p class="error-message" id="aca_end_year_error_${academicCount}">End year is required.</p>
                     </div>
                     <button type="button" class="remove-academic text-secondary hover:underline">Remove</button>
                 `;
@@ -498,14 +526,14 @@
 
                 // Validate required fields
                 const requiredFields = [
-                    { id: 'full_name', errorId: 'full_name_error', validate: val => val.trim() !== '' },
-                    { id: 'email', errorId: 'email_error', validate: val => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
-                    { id: 'phone', errorId: 'phone_error', validate: val => /^\+254\s?7\d{8}$/.test(val) },
-                    { id: 'location', errorId: 'location_error', validate: val => val.trim() !== '' },
-                    { id: 'achievements', errorId: 'achievements_error', validate: val => val.trim() !== '' },
-                    { id: 'scholarship_name', errorId: 'scholarship_name_error', validate: val => val.trim() !== '' },
-                    { id: 'transaction_code', errorId: 'transaction_code_error', validate: val => /^[A-Z0-9]{10}$/.test(val.trim()) },
-                    { id: 'consent', errorId: 'consent_error', validate: () => form.querySelector('input[name="consent"]').checked }
+                    {id: 'full_name', errorId: 'full_name_error', validate: val => val.trim() !== '' },
+                    {id: 'email', errorId: 'email_error', validate: val => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val) },
+                    {id: 'phone', errorId: 'phone_error', validate: val => /^\+254\s?7\d{8}$/.test(val) },
+                    {id: 'location', errorId: 'location_error', validate: val => val.trim() !== '' },
+                    {id: 'achievements', errorId: 'achievements_error', validate: val => val.trim() !== '' },
+                    {id: 'scholarship_name', errorId: 'scholarship_name_error', validate: val => val.trim() !== '' },
+                    {id: 'transaction_code', errorId: 'transaction_code_error', validate: val => /^[A-Z0-9]{10}$/.test(val.trim()) },
+                    {id: 'consent', errorId: 'consent_error', validate: () => form.querySelector('input[name="consent"]').checked }
                 ];
 
                 requiredFields.forEach(field => {
